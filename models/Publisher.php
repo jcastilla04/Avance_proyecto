@@ -19,4 +19,18 @@ class Publisher extends Conexion{
       die($e->getMessage());
     }
   }
+
+  public function superHeroBuscar($data = [])
+    {
+        try {
+
+            $consulta = $this->pdo->prepare("CALL spu_superpublisher_busqueda(?)");
+            $consulta->execute(
+                array($data['publisher_id'])
+            );
+            return $consulta->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
 }

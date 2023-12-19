@@ -21,3 +21,13 @@ if(isset($_GET['operacion'])){
   }
 
 }
+
+if(isset($_POST['operacion'])){
+  $publisher = new Publisher();
+
+  if($_POST['operacion']=='buscar')
+  {
+      $resultado = $publisher->superHeroBuscar(["publisher_id" => $_POST['publisher_id']]);
+      echo json_encode($resultado);
+  }
+}

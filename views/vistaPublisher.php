@@ -28,30 +28,79 @@
                 <th>Race</th>
               </tr>
             </thead>
+            <tbody id="tbody">
+
+            </tbody>
           </table>
         </div>
       </div>
 
       <script>
-        document.addEventListener("DOMContentLoaded", () =>{
-          function $(id) {return document.querySelector(id)}
+        document.addEventListener("DOMContentLoaded", () => {
+  function $(id) {
+    return document.querySelector(id);
+  }
 
-        (function (){
-          fetch(`../controllers/Publisher.controller.php?operacion=listar`)
-          .then(respuesta => respuesta.json())
-          .then(datos =>{
-            datos.forEach(element => {
-              const tapOption = document.createElement("option")
-              tapOption.value = element.id
-              tapOption.innerHTML = element.publisher_name
-              $("#publisher_name").appendChild(tapOption)
-            });
-          })
-          .catch(e =>{
-            console.error(e)
-          })
-        })();
-        })
+  (function () {
+    fetch(`../controllers/Publisher.controller.php?operacion=listar`)
+      .then((respuesta) => respuesta.json())
+      .then((datos) => {
+        datos.forEach((element) => {
+          const tapOption = document.createElement("option");
+          tapOption.value = element.id;
+          tapOption.innerHTML = element.publisher_name;
+          $("#publisher_name").appendChild(tapOption);
+        });
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  })();
+
+  const tbody = $("tbody");
+  $("#publisher_name").addEventListener("change", (event) => {
+    tbody.innerHTML = "";
+
+    const seleccionar = event.target.value;
+    if (seleccionar !== "") {
+      const dato = new FormData();
+      dato.append("operacion", "buscar");
+      dato.append("publisher_id", seleccionar);
+      fetch("../controllers/Publisher.controller.php", {
+        method: "POST",
+        body: dato,
+      })
+        .then((respuesta) => respuesta.json())
+        .then((datos) => {
+          datos.forEach((element) => {
+            const tr = document.createElement("tr");
+
+            const idhero = document.createElement("td");
+            idhero.textContent = element.id;
+            tr.appendChild(idhero);
+
+            const name = document.createElement("td");
+            name.textContent = element.superhero_name;
+            tr.appendChild(name);
+
+            const fullname = document.createElement("td");
+            fullname.textContent = element.full_name;
+            tr.appendChild(fullname);
+
+            const gender = document.createElement("td");
+            gender.textContent = element.gender;
+            tr.appendChild(gender);
+
+            const race = document.createElement("td");
+            race.textContent = element.race;
+            tr.appendChild(race);
+
+            tbody.appendChild(tr);
+          });
+        });
+    }
+  });
+});
       </script>
   </body>
 </html>
