@@ -30,4 +30,11 @@ if(isset($_POST['operacion'])){
       $resultado = $publisher->superHeroBuscar(["publisher_id" => $_POST['publisher_id']]);
       echo json_encode($resultado);
   }
+
+  if($_POST['operacion']=='buscarAlineamiento')
+  {
+      $resultado = $publisher->AlineacionBuscar(["publisher_id" => $_POST['publisher_id']]);
+      echo json_encode($resultado);
+  }
 }
+
